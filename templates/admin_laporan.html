@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Laporan Admin</title>
+</head>
+<body>
+
+<h2>Laporan Sistem</h2>
+
+<h3>Ringkasan Data</h3>
+<ul>
+    <li>Total Pengguna: <b>{{ total_pengguna }}</b></li>
+    <li>Total Pembeli: <b>{{ total_pembeli }}</b></li>
+    <li>Total Agen: <b>{{ total_agen }}</b></li>
+    <li>Total Jadwal Bus: <b>{{ total_jadwal }}</b></li>
+    <li>Total Transaksi: <b>{{ total_transaksi }}</b></li>
+</ul>
+
+<hr>
+
+<h3>Daftar Transaksi Terakhir</h3>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>ID Transaksi</th>
+        <th>Nama Pembeli</th>
+        <th>Bus</th>
+        <th>Harga</th>
+    </tr>
+
+    {% for t in transaksi %}
+    <tr>
+        <td>{{ t.id }}</td>
+        <td>{{ t.nama }}</td>
+        <td>{{ t.bus }}</td>
+        <td>Rp {{ t.harga }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="/admin/dashboard">Kembali ke Dashboard</a>
+
+</body>
+</html>

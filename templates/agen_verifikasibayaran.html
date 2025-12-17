@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verifikasi Pembayaran</title>
+</head>
+<body>
+
+<h2>Verifikasi Pembayaran</h2>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>ID</th>
+        <th>Nama Pembeli</th>
+        <th>Bus</th>
+        <th>Kursi</th>
+        <th>Status</th>
+        <th>Aksi</th>
+    </tr>
+
+    {% for p in pembayaran %}
+    <tr>
+        <td>{{ p.id }}</td>
+        <td>{{ p.nama }}</td>
+        <td>{{ p.bus }}</td>
+        <td>{{ p.kursi }}</td>
+        <td>{{ p.status }}</td>
+        <td>
+            <a href="/agen/ereceipt?id={{ p.id }}">Verifikasi</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="/agen/dashboard">Kembali ke Dashboard</a>
+
+</body>
+</html>

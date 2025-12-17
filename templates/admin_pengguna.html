@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kelola Pengguna</title>
+</head>
+<body>
+
+<h2>Kelola Pengguna</h2>
+
+<a href="#">+ Tambah Pengguna</a>
+
+<br><br>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>ID</th>
+        <th>Nama</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Aksi</th>
+    </tr>
+
+    {% for u in pengguna %}
+    <tr>
+        <td>{{ u.id }}</td>
+        <td>{{ u.nama }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.role }}</td>
+        <td>
+            <a href="#">Hapus</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="/admin/dashboard">Kembali ke Dashboard</a>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Pembeli - BusTicket Online</title>
+
+    <!-- Responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pembeli_register.css') }}">
+
+    <!-- JavaScript -->
+    <script defer src="{{ url_for('static', filename='js/pembeli_register.js') }}"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Register Pembeli</h2>
+
+        <!-- FORM REGISTER -->
+        <form method="POST" id="registerForm">
+            
+            <!-- Nama -->
+            <input 
+                type="text" 
+                name="nama" 
+                id="nama" 
+                placeholder="Nama lengkap" 
+                required
+            >
+
+            <!-- Email -->
+            <input 
+                type="email" 
+                name="email" 
+                id="email" 
+                placeholder="Email" 
+                required
+            >
+
+            <!-- Password -->
+            <input 
+                type="password" 
+                name="password" 
+                id="password" 
+                placeholder="Buat password" 
+                required
+            >
+
+            <!-- Submit -->
+            <button type="submit">Daftar</button>
+        </form>
+
+        <!-- Link Login -->
+        <p class="login-link">
+            Sudah punya akun?
+            <a href="{{ url_for('main.pembeli_login') }}">Login</a>
+        </p>
+    </div>
+
+</body>
+</html>

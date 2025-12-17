@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konfirmasi Pemesanan - BusTicket Online</title>
+    
+    <!-- PASTIKAN PATH INI PERSIS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pembeli_pemesanan.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+    <div class="pemesanan-container">
+        <!-- Header -->
+        <div class="pemesanan-header">
+            <h1><i class="fas fa-check-circle"></i> Konfirmasi Pemesanan Tiket</h1>
+            <p>Tinjau detail pemesanan Anda sebelum melanjutkan ke pembayaran</p>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="booking-status">
+            <div class="status-step completed">
+                <div class="step-number">1</div>
+                <div class="step-label">Pilih Kursi</div>
+            </div>
+            <div class="status-step active">
+                <div class="step-number">2</div>
+                <div class="step-label">Konfirmasi</div>
+            </div>
+            <div class="status-step">
+                <div class="step-number">3</div>
+                <div class="step-label">Pembayaran</div>
+            </div>
+            <div class="status-step">
+                <div class="step-number">4</div>
+                <div class="step-label">Selesai</div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="pemesanan-content">
+            <!-- Booking Summary -->
+            <div class="booking-summary">
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="summary-icon"><i class="fas fa-user"></i></div>
+                        <div class="summary-details">
+                            <h3>Nama Pembeli</h3>
+                            <p id="nama-pembeli">{{ current_user.nama if current_user.is_authenticated else "Guest" }}</p>
+                        </div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-icon"><i class="fas fa-bus"></i></div>
+                        <div class="summary-details">
+                            <h3>ID Bus</h3>
+                            <p id="id-bus">{{ request.args.get('id_bus', 'BUS-001') }}</p>
+                        </div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-icon"><i class="fas fa-chair"></i></div>
+                        <div class="summary-details">
+                            <h3>Jumlah Kursi</h3>
+                            <p id="seat-count">3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ... sisa konten sama seperti sebelumnya ... -->
+
+            <!-- Footer Links -->
+            <div class="footer-links">
+                <a href="{{ url_for('main.pembeli_pilihkursi') }}?schedule={{ request.args.get('schedule', '1') }}" id="refresh-btn">
+                    <i class="fas fa-sync-alt"></i> Refresh Data
+                </a>
+                <a href="{{ url_for('main.pembeli_caritiket') }}">
+                    <i class="fas fa-search"></i> Cari Tiket Lain
+                </a>
+                <a href="{{ url_for('main.pembeli_dashboard') }}">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/pembeli_pemesanan.js') }}"></script>
+</body>
+</html>

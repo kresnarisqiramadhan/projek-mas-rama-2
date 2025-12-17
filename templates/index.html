@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BusTicket Online - Booking Tiket Bus Mudah & Aman</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- JavaScript -->
+    <script defer src="{{ url_for('static', filename='js/index.js') }}"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <!-- Logo -->
+            <a href="{{ url_for('main.index') }}" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-bus"></i>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-main">BusTicket</span>
+                    <span class="logo-sub">Online</span>
+                </div>
+            </a>
+            
+            <!-- Desktop Menu -->
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#features" class="nav-link">Fitur</a></li>
+                <li><a href="#destinations" class="nav-link">Destinasi</a></li>
+                <li><a href="#testimonials" class="nav-link">Testimoni</a></li>
+                <li><a href="#contact" class="nav-link">Kontak</a></li>
+            </ul>
+            
+            <!-- Auth Buttons -->
+            <div class="auth-buttons">
+                <a href="{{ url_for('main.pembeli_login') }}" class="btn btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Masuk
+                </a>
+                <a href="{{ url_for('main.pembeli_register') }}" class="btn btn-register">
+                    <i class="fas fa-user-plus"></i> Daftar
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <div class="mobile-menu-header">
+                <div class="mobile-logo">
+                    <i class="fas fa-bus"></i>
+                    <span>BusTicket</span>
+                </div>
+                <button class="mobile-menu-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul class="mobile-nav">
+                <li><a href="#home" class="mobile-nav-link active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#features" class="mobile-nav-link"><i class="fas fa-star"></i> Fitur</a></li>
+                <li><a href="#destinations" class="mobile-nav-link"><i class="fas fa-map-marker-alt"></i> Destinasi</a></li>
+                <li><a href="#testimonials" class="mobile-nav-link"><i class="fas fa-comment"></i> Testimoni</a></li>
+                <li><a href="#contact" class="mobile-nav-link"><i class="fas fa-envelope"></i> Kontak</a></li>
+                <li class="mobile-auth">
+                    <a href="{{ url_for('main.pembeli_login') }}" class="btn btn-login btn-block">
+                        <i class="fas fa-sign-in-alt"></i> Masuk
+                    </a>
+                    <a href="{{ url_for('main.pembeli_register') }}" class="btn btn-register btn-block">
+                        <i class="fas fa-user-plus"></i> Daftar
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        <span class="title-line">Booking Tiket Bus</span>
+                        <span class="title-line highlight">Online Semudah</span>
+                        <span class="title-line">Satu Klik!</span>
+                    </h1>
+                    
+                    <p class="hero-subtitle">
+                        Nikmati pengalaman booking tiket bus yang cepat, mudah, dan aman. 
+                        Perjalanan nyaman ke seluruh Indonesia dengan harga terbaik.
+                    </p>
+                    
+                    <div class="hero-cta">
+                        <a href="{{ url_for('main.pembeli_register') }}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-rocket"></i> Mulai Sekarang - Gratis!
+                        </a>
+                        <a href="{{ url_for('main.pembeli_login') }}" class="btn btn-outline btn-lg">
+                            <i class="fas fa-sign-in-alt"></i> Sudah Punya Akun?
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- ... (sisanya tetap) ... -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Siap Memulai Perjalanan Anda?</h2>
+                <p class="cta-subtitle">
+                    Bergabung dengan <span class="highlight">50.000+</span> pengguna yang telah mempercayakan 
+                    perjalanan mereka kepada kami
+                </p>
+                <div class="cta-buttons">
+                    <a href="{{ url_for('main.pembeli_register') }}" class="btn btn-primary btn-xl">
+                        <i class="fas fa-rocket"></i> Daftar Sekarang - Gratis!
+                    </a>
+                    <a href="{{ url_for('main.pembeli_login') }}" class="btn btn-outline-light btn-xl">
+                        <i class="fas fa-sign-in-alt"></i> Masuk ke Akun
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4 class="footer-title">Tautan Cepat</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                        <li><a href="{{ url_for('main.pembeli_login') }}">Login</a></li>
+                        <li><a href="{{ url_for('main.pembeli_register') }}">Register</a></li>
+                        <li><a href="#features">Fitur</a></li>
+                        <li><a href="#testimonials">Testimoni</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

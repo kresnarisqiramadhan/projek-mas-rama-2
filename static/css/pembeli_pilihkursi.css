@@ -1,0 +1,237 @@
+/* ============================================
+   STYLING KURSI BIOSKOP SEDERHANA
+   ============================================ */
+
+/* Container utama */
+.cinema-layout {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* Layar bioskop (depan bus) */
+.cinema-screen {
+    background: #2c3e50;
+    height: 50px;
+    margin: 0 auto 30px;
+    border-radius: 8px;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.screen-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.screen-content i {
+    font-size: 1.5rem;
+}
+
+/* Grid kursi */
+.seats-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Baris kursi */
+.seat-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Label baris */
+.row-label {
+    width: 40px;
+    text-align: center;
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 1rem;
+}
+
+/* Container kursi dalam baris */
+.seats-in-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+/* Lorong */
+.aisle-spacer {
+    width: 80px;
+    height: 30px;
+    background: #6c757d;
+    color: white;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    margin: 0 15px;
+}
+
+/* ============================================
+   KURSI BIOSKOP STYLE SEDERHANA
+   ============================================ */
+.bus-seat {
+    width: 60px;
+    height: 70px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    border: 2px solid transparent;
+}
+
+/* Efek 3D sederhana */
+.bus-seat:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 15px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 8px 8px 0 0;
+}
+
+.seat-label {
+    position: relative;
+    z-index: 1;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.seat-icon {
+    position: relative;
+    z-index: 1;
+    font-size: 1rem;
+}
+
+/* KURSI TERSEDIA - HIJAU */
+.seat-available {
+    background: #28a745;
+    border-color: #1e7e34;
+}
+
+.seat-available:hover {
+    background: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+/* KURSI TERISI - MERAH */
+.seat-occupied {
+    background: #dc3545;
+    border-color: #c82333;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+/* KURSI TERPILIH - BIRU */
+.seat-selected {
+    background: #007bff;
+    border-color: #0056b3;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+/* AREA TOILET */
+.toilet-area {
+    margin: 30px auto;
+    padding: 15px;
+    background: #6c757d;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 300px;
+    color: white;
+}
+
+.toilet-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.toilet-label {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.toilet-note {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin-top: 5px;
+}
+
+/* ============================================
+   LEGENDA SEDERHANA
+   ============================================ */
+.seat-legend {
+    margin-top: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.legend-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.seat-example {
+    width: 20px;
+    height: 25px;
+    border-radius: 4px;
+    border: 2px solid #dee2e6;
+}
+
+.seat-example.available { background: #28a745; }
+.seat-example.occupied { background: #dc3545; }
+.seat-example.selected { background: #007bff; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .bus-seat {
+        width: 50px;
+        height: 60px;
+    }
+    
+    .seat-label {
+        font-size: 0.8rem;
+    }
+    
+    .aisle-spacer {
+        width: 60px;
+        margin: 0 10px;
+        font-size: 0.7rem;
+    }
+}

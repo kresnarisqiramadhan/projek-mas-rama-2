@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Input E-Receipt</title>
+</head>
+<body>
+
+<h2>Input E-Receipt</h2>
+
+<p><b>ID Pembayaran:</b> {{ data.id }}</p>
+<p><b>Nama Pembeli:</b> {{ data.nama }}</p>
+<p><b>Bus:</b> {{ data.bus }}</p>
+<p><b>Kursi:</b> {{ data.kursi }}</p>
+<p><b>Harga:</b> Rp {{ data.harga }}</p>
+
+<br>
+
+<form method="POST">
+    <label>Kode E-Receipt:</label><br>
+    <input type="text" name="kode_receipt" required><br><br>
+
+    <button type="submit">Simpan & Verifikasi</button>
+</form>
+
+<br>
+<a href="/agen/verifikasi">Kembali</a> |
+<a href="/agen/dashboard">Dashboard</a>
+
+</body>
+</html>

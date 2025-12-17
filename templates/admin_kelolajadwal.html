@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kelola Jadwal Bus</title>
+</head>
+<body>
+
+<h2>Kelola Jadwal Bus</h2>
+
+<a href="#">+ Tambah Jadwal</a>
+
+<br><br>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>ID</th>
+        <th>Asal</th>
+        <th>Tujuan</th>
+        <th>Jam</th>
+        <th>Aksi</th>
+    </tr>
+
+    {% for j in jadwal %}
+    <tr>
+        <td>{{ j.id }}</td>
+        <td>{{ j.asal }}</td>
+        <td>{{ j.tujuan }}</td>
+        <td>{{ j.jam }}</td>
+        <td>
+            <a href="#">Edit</a> |
+            <a href="#">Hapus</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="/admin/dashboard">Kembali ke Dashboard</a>
+
+</body>
+</html>

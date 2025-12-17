@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Ticket Bus - BusTicket Online</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pembeli_e-tiket.css') }}">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                <i class="fas fa-ticket-alt"></i>
+                E-Ticket Bus Anda
+            </h1>
+            <p class="subtitle">Simpan atau cetak tiket ini untuk menunjukkan saat naik bus</p>
+        </div>
+
+        <!-- E-Ticket Card -->
+        <div class="e-ticket-container">
+            <!-- Ticket Header -->
+            <div class="ticket-header">
+                <div class="ticket-header-left">
+                    <h2>BusTicket Online</h2>
+                    <p>Tiket Elektronik - Bus Travel</p>
+                </div>
+                <div class="ticket-status">
+                    <i class="fas fa-check-circle"></i>
+                    <span>{{ status or "Lunas" }}</span>
+                </div>
+            </div>
+
+            <!-- Ticket Body -->
+            <div class="ticket-body">
+                <!-- Passenger & Bus Information -->
+                <div class="info-section">
+                    <div class="info-card">
+                        <h3>
+                            <i class="fas fa-user"></i>
+                            Informasi Penumpang
+                        </h3>
+                        <div class="info-item">
+                            <span class="info-label">Nama Pembeli:</span>
+                            <span class="info-value" id="passenger-name">{{ nama or "Nama Pembeli" }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">ID Pemesanan:</span>
+                            <span class="info-value" id="booking-id">BOOK-001234</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Tanggal Pemesanan:</span>
+                            <span class="info-value" id="booking-date">Senin, 15 Januari 2024</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Waktu Pemesanan:</span>
+                            <span class="info-value" id="booking-time">14:30 WIB</span>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>
+                            <i class="fas fa-bus"></i>
+                            Informasi Bus
+                        </h3>
+                        <div class="info-item">
+                            <span class="info-label">ID Bus:</span>
+                            <span class="info-value" id="bus-id">{{ id_bus or "BUS-001" }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Nama Bus:</span>
+                            <span class="info-value" id="bus-name">Suite Class</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Tipe Bus:</span>
+                            <span class="info-value" id="bus-type">Eksekutif AC</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Nomor Bus:</span>
+                            <span class="info-value" id="bus-number">B-789-XYZ</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Route Information -->
+                <div class="route-section">
+                    <h3>
+                        <i class="fas fa-route"></i>
+                        Rute Perjalanan
+                    </h3>
+                    <div class="route-display">
+                        <div class="route-line"></div>
+                        <div class="route-point">
+                            <div class="route-city" id="from-city">Jakarta</div>
+                            <div class="route-time" id="departure-time">08:00 WIB</div>
+                        </div>
+                        <div class="route-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                        <div class="route-point">
+                            <div class="route-city" id="to-city">Bandung</div>
+                            <div class="route-time" id="arrival-time">12:30 WIB</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <div class="info-item" style="display: inline-block; border: none; padding: 10px 20px;">
+                            <span class="info-label">Tanggal Keberangkatan:</span>
+                            <span class="info-value" id="travel-date">Senin, 15 Januari 2024</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seat Information -->
+                <div class="seat-section">
+                    <h3>
+                        <i class="fas fa-chair"></i>
+                        Kursi yang Dipesan
+                    </h3>
+                    <div class="seats-display" id="seats-display-container">
+                        <!-- Seat badges akan diisi oleh JavaScript -->
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <div class="info-item" style="display: inline-block; border: none;">
+                            <span class="info-label">Jumlah Kursi:</span>
+                            <span class="info-value">
+                                <span id="seat-count-display">2</span> kursi
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ticket Footer -->
+                <div class="ticket-footer">
+                    <h3>
+                        <i class="fas fa-info-circle"></i>
+                        Informasi Tambahan
+                    </h3>
+                    <div class="booking-info">
+                        <div class="booking-item">
+                            <span class="info-label">Harga Tiket</span>
+                            <span class="info-value" id="ticket-price">Rp 900.000</span>
+                        </div>
+                        <div class="booking-item">
+                            <span class="info-label">Operator</span>
+                            <span class="info-value" id="operator-name">BusTicket Online</span>
+                        </div>
+                        <div class="booking-item">
+                            <span class="info-label">Status Pembayaran</span>
+                            <span class="info-value" style="color: #27ae60;">
+                                <i class="fas fa-check-circle"></i> Lunas
+                            </span>
+                        </div>
+                        <div class="booking-item">
+                            <span class="info-label">Validitas Tiket</span>
+                            <span class="info-value" id="validity-timer">
+                                <i class="fas fa-clock"></i> 24 jam
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QR Code Section -->
+                <div class="qr-section">
+                    <h3>
+                        <i class="fas fa-qrcode"></i>
+                        QR Code Tiket
+                    </h3>
+                    <div id="qr-code-container">
+                        <!-- QR Code akan di-generate oleh JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button id="print-ticket-btn" class="btn btn-primary">
+                <i class="fas fa-print"></i>
+                Cetak Tiket
+            </button>
+            
+            <button id="save-pdf-btn" class="btn btn-secondary">
+                <i class="fas fa-file-pdf"></i>
+                Simpan PDF
+            </button>
+            
+            <button id="share-ticket-btn" class="btn btn-outline">
+                <i class="fas fa-share-alt"></i>
+                Bagikan Tiket
+            </button>
+            
+            <button id="back-dashboard-btn" class="btn btn-outline">
+                <i class="fas fa-arrow-left"></i>
+                Kembali ke Dashboard
+            </button>
+        </div>
+
+        <!-- Footer Links -->
+        <div class="footer-links">
+            <a href="/pembeli/dashboard">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="/pembeli/caritiket">
+                <i class="fas fa-search"></i> Cari Tiket Lain
+            </a>
+            <a href="/pembeli/pemesanan">
+                <i class="fas fa-ticket-alt"></i> Pemesanan Aktif
+            </a>
+            <a href="/help">
+                <i class="fas fa-question-circle"></i> Bantuan
+            </a>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/pembeli_e-tiket.js') }}"></script>
+</body>
+</html>

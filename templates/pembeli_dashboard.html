@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pembeli - BusTicket Online</title>
+    
+    <!-- CSS DASHBOARD -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pembeli_dashboard.css') }}">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <div class="logo">
+                <h1><i class="fas fa-bus"></i> BusTicket<span>Online</span></h1>
+            </div>
+            
+            <div class="user-menu">
+                <div class="welcome-text">
+                    <span class="greeting">Selamat datang</span>
+                </div>
+                <a href="{{ url_for('main.logout') }}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-container">
+        <!-- Welcome Section -->
+        <section class="welcome-card">
+            <h2><i class="fas fa-home"></i> Dashboard</h2>
+            <p>Selamat datang di sistem booking tiket bus online. Pilih menu di bawah untuk memulai.</p>
+            <p id="current-date" style="margin-top: 10px; opacity: 0.9;"></p>
+        </section>
+
+        <!-- Menu Options -->
+        <div class="dashboard-menu">
+            <a href="{{ url_for('main.pembeli_caritiket') }}" class="menu-card">
+                <h3><i class="fas fa-search"></i> Cari Tiket Bus</h3>
+                <p>Cari dan pesan tiket bus ke berbagai tujuan</p>
+            </a>
+            
+            <a href="{{ url_for('main.pembeli_etiket') }}" class="menu-card">
+                <h3><i class="fas fa-ticket-alt"></i> E-Ticket Saya</h3>
+                <p>Lihat dan kelola tiket yang sudah dibeli</p>
+            </a>
+            
+            <a href="{{ url_for('main.pembeli_pemesanan') }}" class="menu-card">
+                <h3><i class="fas fa-history"></i> Riwayat Pemesanan</h3>
+                <p>Lihat history pemesanan tiket Anda</p>
+            </a>
+            
+            <a href="#" class="menu-card">
+                <h3><i class="fas fa-user-cog"></i> Profil Saya</h3>
+                <p>Kelola informasi akun dan data pribadi</p>
+            </a>
+        </div>
+        
+        <!-- Quick Stats (Optional) -->
+        <div style="margin-top: 2rem; text-align: center; color: #7f8c8d;">
+            <p><i class="fas fa-info-circle"></i> Gunakan menu di atas untuk mengakses semua fitur</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <p>&copy; 2024 BusTicket Online. Semua hak dilindungi.</p>
+        <p style="font-size: 0.8rem; margin-top: 5px;">Dashboard v1.0</p>
+    </footer>
+
+    <!-- JavaScript DASHBOARD -->
+    <script src="{{ url_for('static', filename='js/pembeli_dashboard.js') }}"></script>
+</body>
+</html>

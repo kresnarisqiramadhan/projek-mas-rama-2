@@ -1,0 +1,12 @@
+body {
+    font-family: Arial;
+    margin: 30px;
+}
+
+h1 {
+    color: navy;
+}
+
+input {
+    padding: 5px;
+}

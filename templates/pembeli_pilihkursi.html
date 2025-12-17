@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilih Kursi Bus - Bus Ticket Online</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
+    <!-- Custom CSS untuk BUS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pembeli_pilihkursi.css') }}">
+    
+    <style>
+        /* Additional inline styles untuk BUS - SEDERHANA */
+        .bus-seat {
+            width: 60px;
+            height: 70px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            margin: 3px;
+            font-size: 0.9rem;
+            position: relative;
+        }
+        
+        /* Efek 3D sederhana */
+        .bus-seat:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 15px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .bus-seat.seat-available {
+            background: #28a745; /* HIJAU untuk tersedia */
+            color: white;
+            border-color: #1e7e34;
+        }
+        
+        .bus-seat.seat-selected {
+            background: #007bff; /* BIRU untuk terpilih */
+            color: white;
+            border-color: #0056b3;
+            transform: scale(1.05);
+        }
+        
+        .bus-seat.seat-occupied {
+            background: #dc3545; /* MERAH untuk terisi */
+            color: white;
+            border-color: #c82333;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+        
+        .bus-seat:hover:not(.seat-occupied):not(.seat-selected) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .aisle-spacer {
+            width: 80px;
+            height: 40px;
+            background: #6c757d;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            border-radius: 5px;
+            margin: 0 10px;
+        }
+        
+        .bus-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .detail-item {
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .detail-label {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a237e;
+        }
+        
+        .cinema-screen {
+            background: #2c3e50;
+            height: 50px;
+            margin: 0 auto 20px;
+            border-radius: 8px;
+            width: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .seats-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .seat-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .row-label {
+            width: 40px;
+            text-align: center;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+        
+        .seats-in-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+        
+        .toilet-area {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px dashed #2196f3;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('main.pembeli_dashboard') }}">
+                <i class="fas fa-bus me-2"></i>
+                BusTicket<span class="text-warning">Online</span>
+            </a>
+            
+            <div class="navbar-nav ms-auto">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                        <div class="bg-white rounded-circle text-primary d-flex align-items-center justify-content-center me-2" 
+                             style="width: 36px; height: 36px; font-weight: bold;">
+                            {{ current_user.nama[0] if current_user and current_user.nama else 'U' }}
+                        </div>
+                        <span>{{ current_user.nama if current_user and current_user.nama else 'User' }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="{{ url_for('main.pembeli_dashboard') }}">
+                            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.logout') }}">
+                            <i class="fas fa-sign-out-alt me-2"></i> Logout
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4">
+        <!-- Page Header -->
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold text-primary mb-3">
+                <i class="fas fa-chair me-3"></i>
+                Pilih Kursi Bus Anda
+            </h1>
+            <p class="lead text-muted">
+                Pilih kursi yang nyaman untuk perjalanan Anda dari <span class="fw-bold">Jakarta</span> ke <span class="fw-bold">Bandung</span>
+            </p>
+        </div>
+
+        <div class="row">
+            <!-- Left Column: Bus Information -->
+            <div class="col-lg-4 mb-4">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Detail Perjalanan
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Bus Operator Info -->
+                        <div class="text-center mb-4">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                                 style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                <i class="fas fa-bus"></i>
+                            </div>
+                            <h4 id="operatorName" class="text-primary">PO XYZ Express</h4>
+                            <p class="text-muted mb-0" id="busType">Eksekutif AC Double Decker</p>
+                        </div>
+                        
+                        <!-- Bus Details Grid -->
+                        <div class="bus-details-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Rute</div>
+                                <div class="detail-value" id="busRoute">Jakarta - Bandung</div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-label">Tanggal</div>
+                                <div class="detail-value" id="travelDate">Senin, 15 Jan 2024</div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-label">Berangkat</div>
+                                <div class="detail-value" id="departureTime">08:00 WIB</div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-label">Tiba</div>
+                                <div class="detail-value" id="arrivalTime">12:30 WIB</div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-label">Nomor Bus</div>
+                                <div class="detail-value" id="busNumber">B-789-XYZ</div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-label">Plat Nomor</div>
+                                <div class="detail-value" id="plateNumber">B 1234 XYZ</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Facilities -->
+                        <div class="mt-4">
+                            <h6 class="fw-bold mb-3">
+                                <i class="fas fa-concierge-bell me-2"></i>
+                                Fasilitas Bus
+                            </h6>
+                            <div class="d-flex flex-wrap gap-2">
+                                <span class="badge bg-success">AC</span>
+                                <span class="badge bg-info">Toilet</span>
+                                <span class="badge bg-warning">WiFi</span>
+                                <span class="badge bg-danger">TV</span>
+                                <span class="badge bg-secondary">Stop Kontak</span>
+                                <span class="badge bg-primary">Selimut</span>
+                                <span class="badge bg-dark">Air Mineral</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Actions -->
+                        <div class="mt-4 pt-3 border-top">
+                            <button id="selectBestSeats" class="btn btn-warning w-100 mb-2">
+                                <i class="fas fa-crown me-2"></i>
+                                Pilih Kursi Terbaik
+                            </button>
+                            <button id="resetBtn" class="btn btn-outline-danger w-100">
+                                <i class="fas fa-redo me-2"></i>
+                                Reset Pilihan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Seat Selection -->
+            <div class="col-lg-8">
+                <!-- Progress Bar -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0">
+                                <i class="fas fa-chart-line me-2 text-primary"></i>
+                                Progress Pemilihan Kursi
+                            </h6>
+                            <span id="selectionCount" class="badge bg-primary">0/6 kursi</span>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div id="selectionProgress" class="progress-bar bg-success" 
+                                 style="width: 0%" role="progressbar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seat Selection Area -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary mb-4">
+                            <i class="fas fa-chair me-2"></i>
+                            Pilih Kursi Anda
+                        </h5>
+                        
+                        <!-- Layar Bioskop (Depan Bus) - HANYA SATU -->
+                        <div class="cinema-screen mb-4">
+                            <i class="fas fa-bus me-2"></i>
+                            DEPAN BUS
+                        </div>
+                        
+                        <!-- Seat Grid -->
+                        <div id="seatsGrid" class="text-center">
+                            <!-- Akan diisi oleh JavaScript -->
+                            <div class="text-muted py-5">
+                                <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+                                <p>Memuat layout kursi bus...</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Tips -->
+                        <div class="alert alert-info mt-4">
+                            <h6 class="alert-heading">
+                                <i class="fas fa-lightbulb me-2"></i> Tips Memilih Kursi
+                            </h6>
+                            <div id="selectionGuide">
+                                <p class="mb-0">
+                                    • Kursi dekat jendela (A & D) untuk pemandangan<br>
+                                    • Kursi dekat lorong (B & C) untuk akses mudah<br>
+                                    • Maksimal 6 kursi per pemesanan
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Section -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary mb-4">
+                            <i class="fas fa-receipt me-2"></i>
+                            Ringkasan Pemesanan
+                        </h5>
+                        
+                        <div class="row">
+                            <!-- Selected Seats -->
+                            <div class="col-md-6 mb-4">
+                                <h6 class="fw-bold mb-3">
+                                    <i class="fas fa-check-circle me-2 text-success"></i>
+                                    Kursi Terpilih
+                                </h6>
+                                <div id="selected-seats-list" class="bg-light p-3 rounded" style="min-height: 120px;">
+                                    <div class="text-center text-muted py-4">
+                                        <i class="fas fa-chair fa-2x mb-2"></i>
+                                        <p>Belum ada kursi yang dipilih</p>
+                                        <small class="text-muted">Klik kursi yang tersedia di atas</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Price Details -->
+                            <div class="col-md-6">
+                                <h6 class="fw-bold mb-3">
+                                    <i class="fas fa-money-bill-wave me-2 text-success"></i>
+                                    Rincian Harga
+                                </h6>
+                                <div class="bg-light p-3 rounded">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Kursi Regular (<span id="regular-count">0</span>x)</span>
+                                        <span id="regular-total" class="fw-bold">Rp 0</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Kursi VIP (<span id="vip-count">0</span>x)</span>
+                                        <span id="vip-total" class="fw-bold">Rp 0</span>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between fw-bold fs-5">
+                                        <span>Total Pembayaran</span>
+                                        <span id="total-price" class="text-primary">Rp 0</span>
+                                    </div>
+                                    <small class="text-muted d-block mt-2">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Sudah termasuk pajak dan asuransi
+                                    </small>
+                                </div>
+                                
+                                <!-- Action Buttons -->
+                                <div class="mt-4">
+                                    <div class="d-grid gap-2">
+                                        <button id="confirmBtn" class="btn btn-primary btn-lg py-3" disabled>
+                                            <i class="fas fa-check-circle me-2"></i>
+                                            Konfirmasi & Lanjut ke Pembayaran
+                                        </button>
+                                        <button id="backBtn" class="btn btn-outline-secondary">
+                                            <i class="fas fa-arrow-left me-2"></i>
+                                            Kembali ke Pencarian
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light border-top py-4 mt-5">
+        <div class="container text-center">
+            <p class="text-muted mb-2">
+                &copy; 2024 BusTicketOnline. Semua hak dilindungi.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+                <small><a href="#" class="text-decoration-none text-muted">Syarat & Ketentuan</a></small>
+                <small><a href="#" class="text-decoration-none text-muted">Kebijakan Privasi</a></small>
+                <small><a href="#" class="text-decoration-none text-muted">Bantuan</a></small>
+                <small><a href="#" class="text-decoration-none text-muted">Kontak</a></small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Custom JavaScript untuk BUS -->
+    <script src="{{ url_for('static', filename='js/pembeli_pilihkursi.js') }}"></script>
+    
+    <script>
+        // Inisialisasi tambahan
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚌 Halaman pilih kursi bus siap!');
+            
+            // Event listener untuk tombol
+            document.getElementById('selectBestSeats')?.addEventListener('click', function() {
+                if (typeof selectBestSeats === 'function') {
+                    selectBestSeats();
+                }
+            });
+            
+            document.getElementById('resetBtn')?.addEventListener('click', function() {
+                if (typeof handleReset === 'function') {
+                    handleReset();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

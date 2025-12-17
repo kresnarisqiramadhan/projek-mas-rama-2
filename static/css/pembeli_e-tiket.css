@@ -1,0 +1,577 @@
+/* Reset dan base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* CEGAH HORIZONTAL SCROLL */
+html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Container utama */
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 36px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.header h1 i {
+    color: #3498db;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* E-Ticket Card */
+.e-ticket-container {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    margin-bottom: 30px;
+    border: 1px solid #e0e0e0;
+}
+
+/* Ticket Header */
+.ticket-header {
+    background: linear-gradient(135deg, #2c3e50, #4a6491);
+    color: white;
+    padding: 25px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ticket-header-left h2 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.ticket-header-left p {
+    opacity: 0.9;
+    font-size: 16px;
+}
+
+.ticket-status {
+    background-color: #27ae60;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+}
+
+/* Ticket Body */
+.ticket-body {
+    padding: 30px;
+}
+
+/* Passenger & Bus Info */
+.info-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.info-card {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 25px;
+    border-left: 4px solid #3498db;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.info-card h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+}
+
+.info-card h3 i {
+    color: #3498db;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px dashed #ddd;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.info-value {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Route Information */
+.route-section {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 40px;
+    border: 1px solid #eaeaea;
+}
+
+.route-section h3 {
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.route-section h3 i {
+    color: #3498db;
+}
+
+.route-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 20px 0;
+}
+
+.route-point {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    background-color: white;
+    padding: 0 10px;
+}
+
+.route-city {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.route-time {
+    font-size: 18px;
+    color: #7f8c8d;
+    font-weight: 500;
+}
+
+.route-arrow {
+    color: #3498db;
+    font-size: 36px;
+    margin: 0 20px;
+}
+
+.route-line {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    background: linear-gradient(90deg, #3498db, #2c3e50);
+    z-index: 0;
+}
+
+/* Seat Information */
+.seat-section {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 40px;
+}
+
+.seat-section h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+}
+
+.seat-section h3 i {
+    color: #3498db;
+}
+
+.seats-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.seat-badge {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 80px;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
+    transition: all 0.3s ease;
+}
+
+.seat-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
+}
+
+.seat-badge i {
+    font-size: 16px;
+}
+
+/* Ticket Footer */
+.ticket-footer {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 25px;
+    border-top: 3px dashed #ddd;
+    margin-top: 30px;
+}
+
+.ticket-footer h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+}
+
+.ticket-footer h3 i {
+    color: #3498db;
+}
+
+.booking-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.booking-item {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.booking-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.booking-item .info-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.booking-item .info-value {
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+/* QR Code Section */
+.qr-section {
+    text-align: center;
+    padding: 30px;
+    background-color: white;
+    border-radius: 12px;
+    margin-top: 30px;
+    border: 2px dashed #3498db;
+}
+
+.qr-section h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.qr-code-placeholder {
+    width: 200px;
+    height: 200px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    margin: 0 auto 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #7f8c8d;
+    border: 1px dashed #ddd;
+    transition: all 0.3s ease;
+}
+
+.qr-code-placeholder:hover {
+    background-color: #f0f8ff;
+    border-color: #3498db;
+}
+
+.qr-code-placeholder i {
+    font-size: 48px;
+    margin-bottom: 15px;
+    color: #3498db;
+}
+
+.qr-instructions {
+    color: #666;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+    /* Fallback untuk browser lama */
+    margin: 30px -7.5px 0;
+}
+
+.btn {
+    padding: 16px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    border: none;
+    min-width: 200px;
+    /* Fallback untuk browser lama */
+    margin: 0 7.5px 15px;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: #2980b9;
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(52, 152, 219, 0.3);
+}
+
+.btn-secondary {
+    background-color: #27ae60;
+    color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: #219653;
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(39, 174, 96, 0.3);
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: #3498db;
+    border: 2px solid #3498db;
+}
+
+.btn-outline:hover:not(:disabled) {
+    background-color: #f0f8ff;
+    transform: translateY(-3px);
+}
+
+/* Footer Links */
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+    padding: 10px 15px;
+    border-radius: 6px;
+}
+
+.footer-links a:hover {
+    color: #2980b9;
+    background-color: #f0f8ff;
+    text-decoration: none;
+}
+
+/* Styles untuk print */
+@media print {
+    body {
+        background: white !important;
+        padding: 0;
+    }
+    
+    .header, .action-buttons, .footer-links {
+        display: none !important;
+    }
+    
+    .e-ticket-container {
+        box-shadow: none !important;
+        border: 1px solid #333 !important;
+        border-radius: 10px !important;
+    }
+    
+    .ticket-header {
+        background: #2c3e50 !important;
+        background-image: none !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .ticket-status {
+        background: #27ae60 !important;
+        background-image: none !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .btn {
+        display: none !important;
+    }
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 28px;
+    }
+    
+    .ticket-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .route-display {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .route-arrow {
+        transform: rotate(90deg);
+        margin: 15px 0;
+    }
+    
+    .route-line {
+        display: none;
+    }
+    
+    .btn {
+        min-width: 100%;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+}
+
+/* Animasi */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.e-ticket-container {
+    animation: fadeIn 0.5s ease;
+}
+
+/* Tambahan: Loading spinner untuk AJAX */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

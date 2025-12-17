@@ -1,0 +1,329 @@
+
+"""
+BUS TICKET ONLINE - ROUTES.PY
+File utama yang menangani semua URL dan logika aplikasi.
+"""
+
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
+from flask_login import login_user, logout_user, login_required, current_user
+from app import db
+from app.models import Pembeli, Admin, Agen
+from datetime import datetime
+
+# Inisialisasi Blueprint
+main = Blueprint('main', __name__)
+
+# ==================== LANDING & UTILITY ROUTES ====================
+@main.route('/')
+@main.route('/index')
+@main.route('/home')
+def index():
+    """Halaman utama / landing page"""
+    return render_template('index.html')
+
+@main.route('/logout')
+def logout():
+    """Logout semua jenis user"""
+    logout_user()
+    flash('Anda telah berhasil logout.', 'info')
+    return redirect(url_for('main.index'))
+
+# ==================== PEMBELI ROUTES ====================
+@main.route('/pembeli/login', methods=['GET', 'POST'])
+def pembeli_login():
+    """Login untuk pembeli"""
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        
+        # Validasi input
+        if not email or not password:
+            flash('Harap isi email dan password!', 'error')
+            return render_template('pembeli_login.html')
+        
+        # Cari user di database
+        pembeli = Pembeli.query.filter_by(email=email).first()
+        
+        if pembeli and pembeli.check_password(password):
+            # Login sukses
+            login_user(pembeli, remember=True)
+            flash(f'Login berhasil! Selamat datang {pembeli.nama}.', 'success')
+            return redirect(url_for('main.pembeli_dashboard'))  # ⬅️ REDIRECT KE DASHBOARD
+        else:
+            # Login gagal
+            flash('Email atau password salah!', 'error')
+    
+    return render_template('pembeli_login.html')
+
+@main.route('/pembeli/register', methods=['GET', 'POST'])
+def pembeli_register():
+    """Registrasi pembeli baru"""
+    if request.method == 'POST':
+        nama = request.form.get('nama')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        
+        # Validasi input
+        if not nama or not email or not password:
+            flash('Harap lengkapi semua field!', 'error')
+            return render_template('pembeli_register.html')
+        
+        # Cek apakah email sudah terdaftar
+        existing_user = Pembeli.query.filter_by(email=email).first()
+        if existing_user:
+            flash('Email sudah terdaftar! Silakan gunakan email lain.', 'error')
+            return render_template('pembeli_register.html')
+        
+        # Buat user baru
+        new_pembeli = Pembeli(
+            nama=nama.strip(),
+            email=email.lower().strip()
+        )
+        new_pembeli.set_password(password)
+        
+        try:
+            db.session.add(new_pembeli)
+            db.session.commit()
+            flash('Registrasi berhasil! Silakan login dengan akun Anda.', 'success')
+            return redirect(url_for('main.pembeli_login'))  # ⬅️ REDIRECT KE LOGIN
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Terjadi kesalahan: {str(e)}', 'error')
+    
+    return render_template('pembeli_register.html')
+
+@main.route('/pembeli/dashboard')
+@login_required
+def pembeli_dashboard():
+    return render_template(
+        'pembeli_dashboard.html',
+        nama=current_user.nama,
+        email=current_user.email,
+        join_date=current_user.created_at.strftime('%d %B %Y')
+    )
+
+@main.route('/pembeli/cari')
+@login_required
+def pembeli_caritiket():
+    """Halaman pencarian tiket"""
+    return render_template('pembeli_caritiket.html', nama=current_user.nama)
+
+@main.route('/pembeli/hasil')
+@login_required
+def pembeli_hasilnya():
+    """Hasil pencarian tiket"""
+    return render_template('pembeli_hasilnya.html', nama=current_user.nama)
+
+@main.route('/pembeli/kursi')
+@login_required
+def pembeli_pilihkursi():
+    """Pemilihan kursi"""
+    return render_template('pembeli_pilih kursi.html', nama=current_user.nama)
+
+@main.route('/pembeli/pemesanan')
+@login_required
+def pembeli_pemesanan():
+    """Halaman pemesanan"""
+    return render_template('pembeli_pemesanan.html', nama=current_user.nama)
+
+@main.route('/pembeli/bayar')
+@login_required
+def pembeli_bayar():
+    """Halaman pembayaran"""
+    return render_template('pembeli_bayar.html', nama=current_user.nama)
+
+@main.route('/pembeli/etiket')
+@login_required
+def pembeli_etiket():
+    """E-ticket pembeli"""
+    return render_template('pembeli_e-tiket.html', nama=current_user.nama)
+
+# ==================== ADMIN ROUTES ====================
+@main.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    """Login admin"""
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        admin = Admin.query.filter_by(username=username).first()
+        
+        if admin and admin.check_password(password):
+            login_user(admin)
+            flash('Login admin berhasil!', 'success')
+            return redirect(url_for('main.admin_dashboard'))
+        else:
+            flash('Username atau password admin salah!', 'error')
+    
+    return render_template('admin_login.html')
+
+@main.route('/admin/dashboard')
+@login_required
+def admin_dashboard():
+    """Dashboard admin"""
+    if not isinstance(current_user, Admin):
+        flash('Akses ditolak! Halaman untuk admin saja.', 'error')
+        return redirect(url_for('main.index'))
+    return render_template('admin_dashboard.html')
+
+@main.route('/admin/kelolajadwal')
+@login_required
+def admin_kelolajadwal():
+    """Kelola jadwal bus"""
+    if not isinstance(current_user, Admin):
+        flash('Akses ditolak!', 'error')
+        return redirect(url_for('main.index'))
+    return render_template('admin_kelolajadwal.html')
+
+@main.route('/admin/pengguna')
+@login_required
+def admin_pengguna():
+    """Kelola pengguna"""
+    if not isinstance(current_user, Admin):
+        flash('Akses ditolak!', 'error')
+        return redirect(url_for('main.index'))
+    return render_template('admin_pengguna.html')
+
+@main.route('/admin/laporan')
+@login_required
+def admin_laporan():
+    """Laporan sistem"""
+    if not isinstance(current_user, Admin):
+        flash('Akses ditolak!', 'error')
+        return redirect(url_for('main.index'))
+    return render_template('admin_laporan.html')
+
+# ==================== AGEN ROUTES ====================
+@main.route('/agen/login', methods=['GET', 'POST'])
+def agen_login():
+    """Login agen"""
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        agen = Agen.query.filter_by(username=username).first()
+        
+        if agen and agen.check_password(password):
+            login_user(agen)
+            flash('Login agen berhasil!', 'success')
+            return redirect(url_for('main.agen_dashboard'))
+        else:
+            flash('Username atau password agen salah!', 'error')
+    
+    return render_template('agen_login.html')
+
+@main.route('/agen/dashboard')
+@login_required
+def agen_dashboard():
+    """Dashboard agen"""
+    if not isinstance(current_user, Agen):
+        flash('Akses ditolak! Halaman untuk agen saja.', 'error')
+        return redirect(url_for('main.index'))
+    return render_template('agen_dashboard.html')
+
+@main.route('/agen/datapesanan')
+@login_required
+def agen_datapesanan():
+    """Data pesanan agen"""
+    if not isinstance(current_user, Agen):
+        flash('Akses ditolak!', 'error')
+        return redirect(url_for('main.index'))
+    return render_template('agen_datapesanan.html')
+
+@main.route('/agen/ereceipt')
+@login_required
+def agen_ereceipt():
+    """E-receipt agen"""
+    if not isinstance(current_user, Agen):
+        flash('Akses ditolak!', 'error')
+        return redirect(url_for('main.index'))
+    return render_template('agen_e-receipt.html')
+
+@main.route('/agen/verifikasibayaran')
+@login_required
+def agen_verifikasibayaran():
+    """Verifikasi pembayaran"""
+    if not isinstance(current_user, Agen):
+        flash('Akses ditolak!', 'error')
+        return redirect(url_for('main.index'))
+    return render_template('agen_verifikasibayaran.html')
+
+# ==================== API ROUTES ====================
+@main.route('/api/check_email', methods=['POST'])
+def check_email():
+    """API untuk cek email duplikat"""
+    data = request.get_json()
+    email = data.get('email', '').strip().lower()
+    
+    if not email:
+        return jsonify({'error': 'Email tidak valid'}), 400
+    
+    existing = Pembeli.query.filter_by(email=email).first()
+    return jsonify({'exists': existing is not None})
+
+@main.route('/api/user_info')
+@login_required
+def user_info():
+    """API untuk data user"""
+    return jsonify({
+        'nama': current_user.nama,
+        'email': getattr(current_user, 'email', ''),
+        'role': 'pembeli' if isinstance(current_user, Pembeli) else 
+               'admin' if isinstance(current_user, Admin) else 'agen'
+    })
+
+# ==================== ERROR HANDLERS ====================
+@main.app_errorhandler(404)
+def page_not_found(e):
+    """Handle 404 error"""
+    return render_template('404.html'), 404
+
+@main.app_errorhandler(500)
+def internal_server_error(e):
+    """Handle 500 error"""
+    return render_template('500.html'), 500
+
+# ==================== INITIAL DATA ====================
+def create_initial_data():
+    """Buat data awal jika belum ada"""
+    # Cek apakah admin default sudah ada
+    if not Admin.query.filter_by(username='admin').first():
+        admin = Admin(
+            username='admin',
+            email='admin@busticket.com',
+            nama='Administrator'
+        )
+        admin.set_password('admin123')
+        db.session.add(admin)
+        print("✓ Admin default dibuat: admin / admin123")
+    
+    # Cek apakah agen default sudah ada
+    if not Agen.query.filter_by(username='agen').first():
+        agen = Agen(
+            username='agen',
+            email='agen@busticket.com',
+            nama='Agen Bus Utama',
+            perusahaan='BusTicket Partner'
+        )
+        agen.set_password('agen123')
+        db.session.add(agen)
+        print("✓ Agen default dibuat: agen / agen123")
+    
+    # Cek apakah user demo sudah ada
+    if not Pembeli.query.filter_by(email='demo@busticket.com').first():
+        demo_user = Pembeli(
+            nama='Demo User',
+            email='demo@busticket.com'
+        )
+        demo_user.set_password('demo123')
+        db.session.add(demo_user)
+        print("✓ User demo dibuat: demo@busticket.com / demo123")
+    
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error membuat data awal: {e}")
+        
+        
+   
